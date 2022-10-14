@@ -11,7 +11,7 @@ create table Students(
    Code varchar(20) primary key,
    Name nvarchar(255) not null,
    Birthday date not null check (Birthday <getdate()),
-   ClassCode varchar(20) foreign key references Classes(Code)
+   ClassCode varchar(20) not null foreign key references Classes(Code)
 );
 create table Results(
    Id int primary key identity(1,1),
