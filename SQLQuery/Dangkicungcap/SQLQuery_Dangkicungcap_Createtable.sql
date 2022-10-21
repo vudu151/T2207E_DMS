@@ -1,31 +1,35 @@
 create table NHACUNGCAP(
-   MaNhaCC varchar(20) primary key,
-   TenNhaCC nvarchar(100) not null unique,
-   DiaChi varchar(100) not null,
-   SoDT int not null unique check(SoDT like'0%'),
-   MaSoThue int not null unique
+	MaNhaCC varchar(20) primary key,
+	TenNhaCC nvarchar(100) not null unique,
+	DiaChi nvarchar(255) not null,
+	SoDT varchar(15) not null unique check(SoDT like '0%'),
+	MaSoThue integer not null unique
 );
+
 create table LOAIDICHVU(
-   MaLoaiDV varchar(20) primary key identity(1,1),
-   TenLoaiDV nvarchar(100) not null unique
+	MaLoaiDV varchar(20) primary key,
+	TenLoaiDV nvarchar(100)
 );
-create table MUCPHI(
-   MaMP varchar(20) primary key identity(1,1),
-   DonGia decimal(12,4) not null unique check(DonGia >0),
-   MoTa ntext not null
-);
+
 create table DONGXE(
-   DongXe varchar(20) primary key identity(1,1),
-   HangXe varchar(20) not null unique check(HangXe in ('Toyota','Ford','KIA','Huyndai')),
-   SoChoNgoi int not null check(SoChoNgoi>0)
+	DongXe varchar(20) primary key,
+	HangXe varchar(20) not null,
+	SoChoNgoi integer not null,
 );
-create table DANGKICUNGCAP(
-   MaDKCC varchar(20) primary key identity(1,1),
-   MaNhaCC varchar(20) not null foreign key references NHACUNGCAP(MaNhaCC),
-   MaLoaiDV varchar(20) not null foreign key references LOAIDICHVU(MaLoaiDV),
-   DongXe varchar(20) not null foreign key references DONGXE(Dongxe),
-   MaMP varchar(20) not null foreign key references MUCPHI(MaMP),
-   NgayBatDauCungCap varchar(20) not null check(NgayBatDauCungCap < NgayKetThucCungCap),
-   NgayKetThucCungCap varchar(20) not null check(NgayKetThucCungCap > NgayBatDauCungCap),
-   SoLuongXeDangKi int not null check(SoLuongXeDangKi >0)
+
+create table MUCPHI(
+	MaMP varchar(20) primary key,
+	DonGia decimal(12,4) not null check(DonGia >=0) default 0,
+	MoTa nvarchar(255)
+);
+
+create table DANGKYCUNGCAP(
+	MaDKCC varchar(20) primary key,
+	MaNhaCC varchar(20) foreign key references NHACUNGCAP(MaNhaCC),
+	MaLoaiDV varchar(20) foreign key references LOAIDICHVU(MaLoaiDV),
+	DongXe varchar(20) foreign key references DONGXE(DongXe),
+	MaMP varchar (20) foreign key references MUCPHI(MaMP),
+	NgayBatDauCC date,
+	NgayKetThucCC date,
+	SoLuongXeDangKy int not null check(SoLuongXeDangKy >0), 
 );
