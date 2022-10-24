@@ -14,8 +14,9 @@ create table LOAIDICHVU(
 create table DONGXE(
 	DongXe varchar(20) primary key,
 	HangXe varchar(20) not null,
-	SoChoNgoi integer not null,
+	SoChoNgoi integer not null check(SoChoNgoi >0) default 1 ,
 );
+drop table DONGXE;
 
 create table MUCPHI(
 	MaMP varchar(20) primary key,
