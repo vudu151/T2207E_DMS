@@ -32,7 +32,7 @@ select MaNhaCC ,count(*) from DANGKYCUNGCAP
 select distinct HangXe from DONGXE;
 
 --6.Liệt kê MaDKCC, MaNhaCC, TenNhaCC, DiaChi, MaSoThue, TenLoaiDV,DonGia,HangXe, NgayBatDauCC, NgayKetThucCC của tất cả các lần đăng ký cung cấp phương tiện với yêu cầu những nhà cung cấp nào chưa từng thực hiện đăng ký cung cấp phương tiện thì cũng liệt kê thông tin những nhà cung cấp đó ra
-select a.MaDKCC, a.MaNhaCC, b.TenNhaCC, b.DiaChi,b.MaSoThue,e.TenLoaiDV,c.DonGia, d.HangXe, a.NgayBatDauCungCap, a.NgayKetThucCungCap from DANGKYCUNGCAP a
+select a.MaDKCC, a.MaNhaCC, b.TenNhaCC, b.DiaChi,b.MaSoThue,e.TenLoaiDV,c.DonGia, d.HangXe, a.NgayBatDauCC, a.NgayKetThucCC from DANGKYCUNGCAP a
 right join NHACUNGCAP b on a.MaNhaCC = b.MaNhaCC
 left join MUCPHI c on a.MaMP =c.MaMP
 left join DONGXE d on a.DongXe = d.DongXe
