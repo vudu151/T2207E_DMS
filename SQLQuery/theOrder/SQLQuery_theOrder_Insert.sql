@@ -60,7 +60,7 @@ insert into Students (Id,Name,age)
 values (3,'Nam',18),(1,'Dung',15),(2,'Khoi',21),(4,'Son',12);
 select * from Students;
 
---Dùng để tăng hiệu năng của cơ sở dữ liệu
+--Dùng để tăng hiệu năng của cơ sở dữ liệu( nhanh hơn)
 create clustered index chi_muc_vat_ly on Students(Id);    --chỉ mục vật lý, nếu có khóa chính rồi thì ko đánh được chỉ mục nữa. 
-create index chi_muc_vat_ly on Students(Id);              --chỉ mục phi vật lý create index thì đánh bao nhiêu cũng được
+create index chi_muc_phi_vat_ly on Students(Id);              --chỉ mục phi vật lý create index thì đánh bao nhiêu cũng được
   --Chú ý: Khi đánh chỉ mục bất cứ bằng hình thức gì muốn làm lại thì drop=>create=>insert=>select=>Đánh chỉ mục lại

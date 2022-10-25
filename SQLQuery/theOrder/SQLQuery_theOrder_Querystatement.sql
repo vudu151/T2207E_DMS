@@ -1,4 +1,138 @@
-﻿--Liệt kê danh sách khách hàng đã mua hàng ở cửa hàng.--Liệt kê danh sách sản phẩm của của hàng select Name from Products;--Liệt kê danh sách các đơn đặt hàng của cửa hàng.select * from Orders;--Liệt kê danh sách khách hàng theo thứ thự ngược alphabetselect * from Customers order by Name desc;--Liệt kê danh sách sản phẩm của cửa hàng theo thứ thự giá giảm dầnselect * from Products order by Price desc;--Liệt kê các sản phẩm mà khách hàng Kim Trọng đã muadeclare @x int;  -- khai baod một biến xset @x=(select Id from Customers where Name like N'Kim Trọng');select *from Orders where CustomerId = @x;--subqueryselect * from Orders where CustomerId in (select Id from Customers where Name like N'Nguyễn Văn A');--Ông AN chưa trả tiền phí ship > Tăng 20$ vào mỗi đơn hàng của ông Anupdate Orders set GrandTotal = GrandTotal + 10 where CustomerId in (select Id from Customers where Name like N'Nguyễn Văn A');--Thêm một đơn hàng cho ông An insert into Orders(OrderDate,GrandTotal,CustomerId) values (getdate(),1200,(select Id from Customers where Name like N'Nguyễn Văn A')) ;--liệt kê các sản phẩm mà ông AN đã mua select * from Products where Id in    (select ProductId from OrderItems where OrderId in       ( select Id from Orders where CustomerId in	     (select Id from Customers where Name like N'Nguyễn Văn A')));-- lấy thông tin của khách hàng đã mua sản phẩm của máy tính T450select * from Customers where Id  in   (select Id from Orders where Id in       (select OrderId from OrderItems where ProductId in	     (select Id from Products where Name like N'Máy tính T450')));--Số khách hàng đã mua ở cửa hàng--Số mặt hàng mà cửa hàng bán--Tổng tiền của từng đơn hàngcreate table Demo_Classes(Id varchar(10) primary key,Name varchar(50));create table Demo_Students(Id int primary key identity(1,1),Name varchar(50),ClassId varchar(10) foreign key references Demo_Classes(Id));insert into Demo_Classes(Id,Name)values ('A','Lop A'),('B','Lop B');insert into Demo_Students(Name,ClassId)values ('An','A'),('Nam','A'),('Tu',null);select * from Demo_Classes;select * from Demo_Students;--INNER JOIN, LEFT JOIN, RIGHT JOIN  -- ĐÂY LÀ CÁCH NỐI BẢNG TRONG SQLselect * from Demo_Studentsinner join Demo_Classes on Demo_Students.ClassId= Demo_Classes.Id;    --Trả về bản ghi có giá trị phù hợp với cả hai bảngselect * from Demo_Studentsleft join Demo_Classes on Demo_Students.ClassId = Demo_Classes.Id;    --Trả về bản ghi có giá trị bên trái và bản ghi trùng với giá trị bên phải select * from Demo_Students right join Demo_Classes on Demo_Students.ClassId = Demo_Classes.Id;    --Trả về bản ghi có giá trị bên phải và bản ghi trùng với giá trị bên tráiselect * from Demo_Students tb1          --Thay tên bảng từ Demo_Students thành tb1 CHO NGẮN GỌNleft join Demo_Classes tb2 on tb1.ClassId = tb2.Idwhere tb2.Name like'%Lop%';select CustomerId,count(Id) as soluong from Orders group by CustomerId;select tb1.Name, tb2.soluong from Customers tb1    inner join(select CustomerId,count(Id) as soluong from Orders group by CustomerId) tb2   on tb1.Id = tb2.CustomerId;select * from OrderItems Ainner join Orders B on A.OrderId = B.Id inner join Products C on A.ProductId = C.Id inner join Customers D on B.CustomerId = D.Id;--Procedure: Tìm kiếm đơn hàng theo tên khách hàng (NHỚ CHỖ NÀY PHẢI CHẠY T2207E_theOrder)
+﻿--Liệt kê danh sách khách hàng đã mua hàng ở cửa hàng.
+
+--Liệt kê danh sách sản phẩm của của hàng 
+select Name from Products;
+
+--Liệt kê danh sách các đơn đặt hàng của cửa hàng.
+select * from Orders;
+
+--Liệt kê danh sách khách hàng theo thứ thự ngược alphabet
+select * from Customers order by Name desc;
+
+--Liệt kê danh sách sản phẩm của cửa hàng theo thứ thự giá giảm dần
+select * from Products order by Price desc;
+
+--Liệt kê các sản phẩm mà khách hàng Kim Trọng đã mua
+declare @x int;  -- khai baod một biến x
+set @x=(select Id from Customers where Name like N'Kim Trọng');
+select *from Orders where CustomerId = @x;
+
+--subquery
+select * from Orders where CustomerId in (select Id from Customers where Name like N'Nguyễn Văn A');
+
+--Ông AN chưa trả tiền phí ship > Tăng 20$ vào mỗi đơn hàng của ông An
+update Orders set GrandTotal = GrandTotal + 10 where CustomerId in (select Id from Customers where Name like N'Nguyễn Văn A');
+
+--Thêm một đơn hàng cho ông An 
+insert into Orders(OrderDate,GrandTotal,CustomerId) values (getdate(),1200,(select Id from Customers where Name like N'Nguyễn Văn A')) ;
+
+--liệt kê các sản phẩm mà ông AN đã mua 
+select * from Products where Id in 
+   (select ProductId from OrderItems where OrderId in 
+      ( select Id from Orders where CustomerId in
+	     (select Id from Customers where Name like N'Nguyễn Văn A')));
+
+-- lấy thông tin của khách hàng đã mua sản phẩm của máy tính T450
+select * from Customers where Id  in
+   (select Id from Orders where Id in 
+      (select OrderId from OrderItems where ProductId in
+	     (select Id from Products where Name like N'Máy tính T450')));
+
+--Số khách hàng đã mua ở cửa hàng
+
+--Số mặt hàng mà cửa hàng bán
+
+--Tổng tiền của từng đơn hàng
+
+
+
+--MỘT SỐ CÂU QUERYSTATEMENT
+--Liet ke
+select *from Products;
+select Id,Name,Price from Products;
+select Id as Code ,Name,Price from Products ;    --as đổi thông tin để che giấu dữ liệu
+
+--Sap xep
+select * from Products order by Price asc;     -- sắp xếp cột Price từ bé đến lớn(asc) , còn desc thì ngược lại
+select * from Products order by Price desc;
+select * from Products order by Price desc, Name asc;                                           
+
+--Lay so luong nhat dinh
+select top 1 * from Products order by Price desc;      --Lấy món đắt nhất
+select top 50 percent *from Products order by Price desc;        --Lấy 50% món (chi cẩn lẻ ra một lí cũng làm tròn lên)
+
+--Lọc dữ liệu
+select *from Products where Id= 1 or Id=2;
+select * from Products where Id in (1,2,3,4,5,6,7,8);          --Trong bảng có cái Id nào thì in ra còn ko có thì thôi
+select * from Products where Price >100 and Price <1000;
+
+select * from Orders where OrderDate='2022-10-10';
+select * from Orders where OrderDate >='2022-10-01' and OrderDate <='2022-10-10';
+select * from Orders where OrderDate between '2022-10-01' and '2022-10-10';
+
+--Tim kiem
+select * from Products where Name like 'M%';   --start with 
+select * from Products where Name like '%450';  --end with
+select * from Products where Name like '%45%';    --contains
+
+--Thong ke
+select count(Id) as soluongdonhang from Orders where OrderDate between '2022-10-01' and '2022-10-10';
+select sum(GrandTotal) as doanhthu from Orders where OrderDate between '2022-10-01' and '2022-10-10';   --chỉ áp dụng cho kiểu dữ liệu number
+select avg(GrandTotal) as trungbinh from Orders where OrderDate between '2022-10-01' and '2022-10-10';
+select CustomerId, sum(GrandTotal) as doanhthu from Orders group by CustomerId;        --Nhóm CustomerId cong tính tổng của GrandTotal
+select CustomerId, sum(GrandTotal) as doanhthu from Orders where OrderDate= getdate() group by CustomerId;  -- Đi vào from đến where đên group xong đến select
+
+
+
+--TẠO BẢNG ĐỂ LÀM INNER JOIN, LEFT JOIN, RIGHT JOIN 
+create table Demo_Classes(
+Id varchar(10) primary key,
+Name varchar(50)
+);
+create table Demo_Students(
+Id int primary key identity(1,1),
+Name varchar(50),
+ClassId varchar(10) foreign key references Demo_Classes(Id)
+);
+
+insert into Demo_Classes(Id,Name)
+values ('A','Lop A'),('B','Lop B');
+insert into Demo_Students(Name,ClassId)
+values ('An','A'),('Nam','A'),('Tu',null);
+
+select * from Demo_Classes;
+select * from Demo_Students;
+
+
+--CẤU TRÚC INNER JOIN, LEFT JOIN, RIGHT JOIN  -- ĐÂY LÀ CÁCH NỐI BẢNG TRONG SQL
+select * from Demo_Students
+inner join Demo_Classes on Demo_Students.ClassId= Demo_Classes.Id;    --Trả về bản ghi có giá trị phù hợp với cả hai bảng
+
+select * from Demo_Students
+left join Demo_Classes on Demo_Students.ClassId = Demo_Classes.Id;    --Trả về bản ghi có giá trị bên trái và bản ghi trùng với giá trị bên phải 
+
+select * from Demo_Students 
+right join Demo_Classes on Demo_Students.ClassId = Demo_Classes.Id;    --Trả về bản ghi có giá trị bên phải và bản ghi trùng với giá trị bên trái
+
+select * from Demo_Students tb1          --Thay tên bảng từ Demo_Students thành tb1 CHO NGẮN GỌN
+left join Demo_Classes tb2 on tb1.ClassId = tb2.Id
+where tb2.Name like'%Lop%';
+
+select CustomerId,count(Id) as soluong from Orders group by CustomerId;
+
+select tb1.Name, tb2.soluong from Customers tb1 
+   inner join(select CustomerId,count(Id) as soluong from Orders group by CustomerId) tb2
+   on tb1.Id = tb2.CustomerId;
+
+select * from OrderItems A
+inner join Orders B on A.OrderId = B.Id 
+inner join Products C on A.ProductId = C.Id 
+inner join Customers D on B.CustomerId = D.Id;
+
+
+
+--PROCEDURE & TRIGGER
+--Procedure: Tìm kiếm đơn hàng theo tên khách hàng (NHỚ CHỖ NÀY PHẢI CHẠY T2207E_theOrder)
 create procedure find_order_by_customer @name nvarchar(255) as
 select * from Orders where CustomerId in
 (select Id  from Customers where Name like @name);
@@ -29,8 +163,7 @@ exec normal_user_create_products @name=N'Túi xách Gucci',
 select * from Products;
 
 
-
---Trigger : được vận hành khi có một sự kiện xảy ra
+--TRIGGER: được vận hành khi có một sự kiện xảy ra
 create trigger thong_bao_them_san_pham
 on Products
 after insert
@@ -39,6 +172,7 @@ print 'Vừa có người thêm sản phẩm xong';
 
 drop trigger thong_bao_them_san_pham;
 
+--ko cho xóa sản phẩm
 create trigger khong_cho_xoa_sp
 on Products 
 after delete
