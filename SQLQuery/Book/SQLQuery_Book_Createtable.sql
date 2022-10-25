@@ -25,6 +25,7 @@ create table Books(
    Price decimal(12,4) not null check (Price >=0) default 0,
    Qty int not null check(Qty>0), 
    CategoryId int foreign key references Categories(Id),
+   AuthorId int foreign key references Authors(Id),
    PublisherId int foreign key references Publishers(Id)
 );
 drop table Books

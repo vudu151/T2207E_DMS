@@ -21,7 +21,8 @@ select *from Orders where CustomerId = @x;
 select * from Orders where CustomerId in (select Id from Customers where Name like N'Nguyễn Văn A');
 
 --Ông AN chưa trả tiền phí ship > Tăng 20$ vào mỗi đơn hàng của ông An
-update Orders set GrandTotal = GrandTotal + 10 where CustomerId in (select Id from Customers where Name like N'Nguyễn Văn A');
+update Orders set GrandTotal = GrandTotal + 10 where CustomerId in 
+   (select Id from Customers where Name like N'Nguyễn Văn A');
 
 --Thêm một đơn hàng cho ông An 
 insert into Orders(OrderDate,GrandTotal,CustomerId) values (getdate(),1200,(select Id from Customers where Name like N'Nguyễn Văn A')) ;
