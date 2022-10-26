@@ -180,7 +180,7 @@ after delete
 as
  if exists (select * from deleted where Id =3)    --ko cho xóa sản phẩm có Id=3, còn Id khác xóa bình thường 
  begin
-   rollback transaction;
+   rollback transaction;        --Kiểu vòng lặp xét lại điều kiện từ đầu
    print 'Khong cho xoa sp';
  end
 
